@@ -18,9 +18,8 @@ class Program
             return;
         }
         Console.WriteLine("Bitte wählen Sie den Teil (1-2):");
-        var user_part = Console.ReadLine();
-        user_day.TryParseToInt(out int part, true);
-        if (part != 1 && part != 2)
+        var user_part = Console.ReadLine();        
+        if (!user_part.TryParseToInt(out int part, true))
         {
             Console.WriteLine("Nicht verfügbar!");
             return;
