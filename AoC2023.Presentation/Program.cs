@@ -1,4 +1,4 @@
-﻿using AoC2023.Application;
+﻿using AoC23.Application;
 using AoC23.Presentation;
 
 class Program

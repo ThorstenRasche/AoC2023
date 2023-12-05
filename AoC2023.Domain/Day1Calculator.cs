@@ -3,12 +3,12 @@
 [Day(1)]
 public class Day1Calculator : IDayCalculator
 {
-    public int CalculatePart1(string filePath)
+    public long CalculatePart1(string filePath)
     {
         return ProcessFile(filePath, false);
     }
 
-    public int CalculatePart2(string filePath)
+    public long CalculatePart2(string filePath)
     {
         return ProcessFile(filePath, true);
     }

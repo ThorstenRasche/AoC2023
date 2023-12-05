@@ -76,4 +76,56 @@ public static class Extensions
                     .ToList();
     }
 
+    public static IEnumerable<long> ParseSeeds(this string line)
+    {
+        return line.Split(": ")[1].Split().Select(long.Parse);
+    }
+
+    public static IEnumerable<(long start, long end)> ParseSeedRanges(this string line)
+    {
+        var numbers = line.Split(": ")[1].Split().Select(long.Parse).ToArray();
+        for (int i = 0; i < numbers.Length; i += 2)
+        {
+            yield return (numbers[i], numbers[i + 1]);
+        }
+    }
+
+    public static IEnumerable<IEnumerable<(long start, long end, long destination)>> ParseMaps(this string[] lines)
+    {
+        var currentMap = new List<(long start, long end, long destination)>();
+        bool isMapStarted = false;
+
+        foreach (var line in lines)
+        {
+            if (string.IsNullOrWhiteSpace(line))
+            {
+                if (isMapStarted)
+                {
+                    yield return currentMap;
+                    currentMap = new List<(long start, long end, long destination)>();
+                    isMapStarted = false;
+                }
+            }
+            else if (line.EndsWith("map:"))
+            {
+                isMapStarted = true;
+            }
+            else if (isMapStarted)
+            {
+                var parts = line.Split(' ').Select(long.Parse).ToArray();
+                currentMap.Add((parts[1], parts[1] + parts[2], parts[0]));
+            }
+        }
+
+        if (isMapStarted)
+        {
+            yield return currentMap;
+        }
+    }
+
+    public static long[] ToLongs(this string input, string splitter)
+    {
+        return input.Split(splitter, StringSplitOptions.RemoveEmptyEntries).Select(long.Parse).ToArray();
+    }
+
 }

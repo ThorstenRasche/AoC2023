@@ -3,7 +3,7 @@
 [Day(4)]
 public class Day4Calculator : IDayCalculator
 {
-    public int CalculatePart1(string filePath)
+    public long CalculatePart1(string filePath)
     {
         var lines = File.ReadAllLines(filePath);
         return lines.Select(card =>
@@ -16,7 +16,7 @@ public class Day4Calculator : IDayCalculator
                 .Sum(card => card.NumWinners > 0 ? 1 << (card.NumWinners - 1) : 0);
     }
 
-    public int CalculatePart2(string filePath)
+    public long CalculatePart2(string filePath)
     {
         var lines = File.ReadAllLines(filePath);
         var cardInstances = new int[lines.Length];
