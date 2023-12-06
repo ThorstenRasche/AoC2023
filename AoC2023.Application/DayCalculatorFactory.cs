@@ -1,7 +1,7 @@
 ﻿using AoC23.Domain;
 using System.Reflection;
 
-namespace AoC2023.Application;
+namespace AoC23.Application;
 public static class DayCalculatorFactory
 {
     public static IDayCalculator? GetCalculator(int day)

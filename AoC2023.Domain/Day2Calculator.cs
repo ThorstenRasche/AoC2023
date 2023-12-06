@@ -5,12 +5,12 @@ namespace AoC23.Domain;
 [Day(2)]
 public class Day2Calculator : IDayCalculator
 {
-    public int CalculatePart1(string filePath)
+    public long CalculatePart1(string filePath)
     {
         return Extensions.CalculateSumOfValidGames(filePath);
     }
 
-    public int CalculatePart2(string filePath)
+    public long CalculatePart2(string filePath)
     {
         return File.ReadLines(filePath)
                    .Select(line => line.Split(": ")[1].Split("; ")

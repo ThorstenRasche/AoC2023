@@ -5,7 +5,7 @@ namespace AoC23.Domain;
 [Day(3)]
 public class Day3Calculator : IDayCalculator
 {
-    public int CalculatePart1(string filePath)
+    public long CalculatePart1(string filePath)
     {
         var rows = File.ReadAllLines(filePath);
         return rows.SelectMany((row, i) => Regex.Matches(row, @"\d+")
@@ -14,7 +14,7 @@ public class Day3Calculator : IDayCalculator
                    .Sum(x => x.Value);
     }
 
-    public int CalculatePart2(string filePath)
+    public long CalculatePart2(string filePath)
     {
         return File.ReadLines(filePath)
                .SelectMany((line, rowIndex) =>
