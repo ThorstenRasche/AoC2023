@@ -7,7 +7,7 @@ class Program
     static void Main(string[] args)
     {
         Console.WriteLine("Advent of Code 2023");
-        Console.WriteLine("Bitte wählen Sie den Tag (1-24):");
+        Console.WriteLine("Bitte wählen Sie den Tag (1-4):");
         var user_day = Console.ReadLine();
         if(!user_day.TryParseToInt(out int day, false))
             Console.WriteLine("Keine Zahl");
@@ -15,6 +15,7 @@ class Program
         if (calculator is null)
         {
             Console.WriteLine("Nicht verfügbar!");
+            Console.ReadKey();
             return;
         }
         Console.WriteLine("Bitte wählen Sie den Teil (1-2):");
@@ -22,6 +23,7 @@ class Program
         if (!user_part.TryParseToInt(out int part, true))
         {
             Console.WriteLine("Nicht verfügbar!");
+            Console.ReadKey();
             return;
         }
 
