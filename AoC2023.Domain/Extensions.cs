@@ -81,15 +81,6 @@ public static class Extensions
         return line.Split(": ")[1].Split().Select(long.Parse);
     }
 
-    public static IEnumerable<(long start, long end)> ParseSeedRanges(this string line)
-    {
-        var numbers = line.Split(": ")[1].Split().Select(long.Parse).ToArray();
-        for (int i = 0; i < numbers.Length; i += 2)
-        {
-            yield return (numbers[i], numbers[i + 1]);
-        }
-    }
-
     public static IEnumerable<IEnumerable<(long start, long end, long destination)>> ParseMaps(this string[] lines)
     {
         var currentMap = new List<(long start, long end, long destination)>();
@@ -127,5 +118,41 @@ public static class Extensions
     {
         return input.Split(splitter, StringSplitOptions.RemoveEmptyEntries).Select(long.Parse).ToArray();
     }
+
+    static long NextTerm(IEnumerable<long> sequence)
+    {
+        var differences = sequence.Zip(sequence.Skip(1), (a, b) => b - a).ToList();
+
+        if (differences.All(d => d == 0) || !differences.Any())
+        {
+            return sequence.Last();
+        }
+        return sequence.Last() + NextTerm(differences);
+    }
+    public static long ProcessFile(this string filePath, bool reverse) => File.ReadAllLines(filePath)
+                   .Select(line => line.Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                                      .Select(long.Parse))
+                   .Select(numbers => reverse ? numbers.Reverse() : numbers)
+                   .Select(NextTerm)
+                   .Sum();
+
+    public static long PathLength(this char[] moves, Dictionary<string, (string Left, string Right)> nodes, string startNode, string targetSuffix)
+    {
+        var extendedMoves = Enumerable.Repeat(moves, int.MaxValue / moves.Length).SelectMany(x => x).GetEnumerator();
+        var currentNode = startNode;
+        long stepCount = 0;
+        while (!currentNode.EndsWith(targetSuffix))
+        {
+            extendedMoves.MoveNext();
+            var move = extendedMoves.Current;
+            currentNode = move == 'L' ? nodes[currentNode].Left : nodes[currentNode].Right;
+            stepCount++;
+        }
+        return stepCount;
+    }
+
+    public static long LCM(long a, long b) => (a / GCD(a, b)) * b;
+    public static long GCD(this long a, long b) => b == 0 ? a : GCD(b, a % b);
+
 
 }
