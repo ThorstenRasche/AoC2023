@@ -152,7 +152,32 @@ public static class Extensions
     }
 
     public static long LCM(long a, long b) => (a / GCD(a, b)) * b;
-    public static long GCD(this long a, long b) => b == 0 ? a : GCD(b, a % b);
+    public static long GCD(long a, long b) => b == 0 ? a : GCD(b, a % b);
+
+    static public int ToIntFromHex(this string input) => int.Parse(input, System.Globalization.NumberStyles.HexNumber);
+    static public int ToInt(this string input) => int.Parse(input);
+
+    public static IEnumerable<string> ExtractWords(this string str)
+    {
+        return Regex.Matches(str, "[a-zA-z]+").Select(a => a.Value);
+    }
+
+    public static long FindGCD(long a, long b)
+    {
+        if (a == 0 || b == 0) return Math.Max(a, b);
+        return (a % b == 0) ? b : FindGCD(b, a % b);
+    }
+
+    public static long FindLCM(long a, long b) => a * b / FindGCD(a, b);
+
+    public static List<string> SplitByNewline(this string input, bool blankLines = false, bool shouldTrim = true)
+    {
+        return input
+           .Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None)
+           .Where(s => blankLines || !string.IsNullOrWhiteSpace(s))
+           .Select(s => shouldTrim ? s.Trim() : s)
+           .ToList();
+    }
 
 
 }

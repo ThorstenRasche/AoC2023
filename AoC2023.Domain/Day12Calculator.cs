@@ -1,0 +1,63 @@
+﻿namespace AoC23.Domain;
+
+[Day(12)]
+public class Day12Calculator : IDayCalculator
+{
+    public long CalculatePart1(string filePath)
+    {
+        return Part1(Parse(filePath));
+    }
+
+    public long CalculatePart2(string filePath)
+    {
+        return Part2(Parse(filePath));
+    }
+
+    private static long Part1((string, int[])[] tt) =>
+            Solve(tt, 1);
+
+    private static long Part2((string, int[])[] tt) =>
+        Solve(tt, 5);
+
+    private static long Solve((string, int[])[] tt, int n) =>
+        tt.Sum(t => Count(t, n));
+
+    private static long Count((string s, int[] lens) t, int n)
+    {
+        string s = string.Join('?', Enumerable.Repeat(t.s, n));
+        int[] lens = Enumerable.Repeat(t.lens, n).SelectMany(v => v).ToArray();
+        return Count(s, lens, new());
+    }
+
+    private static long Count(string s, int[] lens, Dictionary<int, long> counts, int key = 0)
+    {
+        if (counts.TryGetValue(key, out long count))
+            return count;
+        if (lens.Length == 0)
+            return counts[key] = s.Any(c => c == '#') ? 0 : 1;
+        int len = lens[0];
+        int max = s.Length - lens.Length - Math.Max(len, lens.Sum() - 1);
+        int k = s[..lens[0]].Count(c => c != '.');
+        for (int first = 0, last = len; first <= max;)
+        {
+            char c = s[first++], d = s[last++];
+            if (k == len && d != '#')
+                count += Count(s[last..], lens[1..], counts, key + last * 32 + 1);
+            if (c == '#')
+                return counts[key] = count;
+            k += (d == '.' ? 0 : 1) - (c == '.' ? 0 : 1);
+        }
+        if (k == len && lens.Length == 1)
+            ++count;
+        return counts[key] = count;
+    }
+
+    private static (string, int[])[] Parse(string path) =>
+        File.ReadAllLines(path)
+            .Select(s => s.Split(' '))
+            .Select(ParseOne)
+            .ToArray();
+
+    private static (string, int[]) ParseOne(string[] ss) =>
+        (ss[0], ss[1].Split(',').Select(int.Parse).ToArray());
+}

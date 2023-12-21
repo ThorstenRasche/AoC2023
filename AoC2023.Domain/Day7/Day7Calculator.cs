@@ -64,23 +64,23 @@ public partial class Day7Calculator : IDayCalculator
 
     }
 
-    //BigInteger Part1Points(string hand) =>
-    //    (PatternValue(hand) << 64) + CardValue(hand, "123456789TJQKA");
+    BigInteger Part1Points(string hand) =>
+        (PatternValue(hand) << 64) + CardValue(hand, "123456789TJQKA");
 
-    //BigInteger Part2Points(string hand)
-    //{
-    //    var replacement = (
-    //        from ch in hand
-    //        where ch != 'J'
-    //        group ch by ch into g
-    //        orderby g.Count() descending
-    //        select g.Key
-    //    ).FirstOrDefault('J');
+    BigInteger Part2Points(string hand)
+    {
+        var replacement = (
+            from ch in hand
+            where ch != 'J'
+            group ch by ch into g
+            orderby g.Count() descending
+            select g.Key
+        ).FirstOrDefault('J');
 
-    //    var cv = CardValue(hand, "J123456789TQKA");
-    //    var pv = PatternValue(hand.Replace('J', replacement));
-    //    return (pv << 64) + cv;
-    //}
+        var cv = CardValue(hand, "J123456789TQKA");
+        var pv = PatternValue(hand.Replace('J', replacement));
+        return (pv << 64) + cv;
+    }
 
 
     BigInteger CardValue(string hand, string cardOrder) =>

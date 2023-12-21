@@ -32,6 +32,17 @@ class Program
         
         var result = part == 1 ? calculator!.CalculatePart1(filePath) : calculator!.CalculatePart2(filePath);
         Console.WriteLine($"Ergebnis für Tag {day}, Teil {part}: {result}");
+        Console.WriteLine("Möchten Sie ebenfalls das Ergebnis den verbleibenden Teils? [y/n]");
+        var user_next = Console.ReadLine();
+        if(user_next is "y")
+        {
+            if(part is 1)                
+                Console.WriteLine($"Ergebnis für Tag {day}, Teil 2: {calculator!.CalculatePart2(filePath)}");                
+            else   
+                Console.WriteLine($"Ergebnis für Tag {day}, Teil 1: {calculator!.CalculatePart1(filePath)}");
+            
+                
+        }
         Console.ReadKey();
     }
 }
